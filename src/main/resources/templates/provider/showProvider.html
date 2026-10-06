@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Provider Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+</head>
+<body>
+    <div class="container my-5">
+        <h2 class="text-center font-weight-bold mb-4">Provider Details</h2>
+        
+        <!-- Fiche Provider -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-primary text-white font-weight-bold">
+                Provider Information
+            </div>
+            <div class="card-body">
+                <p><strong>Name:</strong> <span th:text="${provider.name}"></span></p>
+                <p><strong>Email:</strong> <span th:text="${provider.email}"></span></p>
+                <p><strong>Address:</strong> <span th:text="${provider.address}"></span></p>
+                <p><strong>Invoice / Accreditation:</strong> 
+                    <a th:if="${provider.invoiceFile != null and provider.invoiceFile != ''}" 
+                       th:href="@{'/uploadArticles/' + ${provider.invoiceFile}}" target="_blank" class="btn btn-sm btn-outline-info">
+                       View Attached Document
+                    </a>
+                    <span th:unless="${provider.invoiceFile != null and provider.invoiceFile != ''}" class="text-muted">None</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Liste des articles associés à ce Provider -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white font-weight-bold">
+                Associated Articles & Quotations
+            </div>
+            <div class="card-body">
+                <div th:if="${articles == null or #lists.isEmpty(articles)}" class="alert alert-warning">
+                    No articles associated with this provider yet.
+                </div>
+                <div th:if="${articles != null and not #lists.isEmpty(articles)}">
+                    <table class="table table-striped table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Label</th>
+                                <th>Price</th>
+                                <th>Picture</th>
+                                <th>Devis (PDF)</th>
+                                <th>Estimation (Excel)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="art : ${articles}">
+                                <td th:text="${art.label}"></td>
+                                <td th:text="${art.price} + ' DT'"></td>
+                                <td>
+                                    <img th:if="${art.picture != null}" 
+                                         th:src="@{'/uploadArticles/' + ${art.picture}}" 
+                                         width="50" height="50" style="object-fit:cover; border-radius:5px;"/>
+                                </td>
+                                <td>
+                                    <a th:if="${art.pdfFile != null and art.pdfFile != ''}" 
+                                       th:href="@{'/uploadArticles/' + ${art.pdfFile}}" 
+                                       target="_blank" class="btn btn-sm btn-outline-danger">
+                                       <i class="fas fa-file-pdf"></i> View PDF
+                                    </a>
+                                    <span th:unless="${art.pdfFile != null and art.pdfFile != ''}" class="text-muted small">None</span>
+                                </td>
+                                <td>
+                                    <a th:if="${art.excelFile != null and art.excelFile != ''}" 
+                                       th:href="@{'/uploadArticles/' + ${art.excelFile}}" 
+                                       download class="btn btn-sm btn-outline-success">
+                                       <i class="fas fa-file-excel"></i> Download Excel
+                                    </a>
+                                    <span th:unless="${art.excelFile != null and art.excelFile != ''}" class="text-muted small">None</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <a th:href="@{/providers/list}" class="btn btn-secondary mt-3">Back to Providers</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

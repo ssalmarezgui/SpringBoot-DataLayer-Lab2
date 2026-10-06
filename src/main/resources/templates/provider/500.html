@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Erreur 500</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            text-align: center;
+            padding-top: 50px;
+        }
+        .error-img {
+            max-width: 450px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Affichage de l'image -->
+        <img th:src="@{/images/error500.webp}" alt="Error 500" class="error-img"/>
+        
+        <h2 class="text-danger font-weight-bold">Oups ! Une erreur est survenue</h2>
+        <p class="lead text-muted">Ce fournisseur n'existe plus ou a déjà été supprimé de la base de données.</p>
+        
+        <a th:href="@{/providers/list}" class="btn btn-primary btn-lg mt-3">
+            Retour à la liste des fournisseurs
+        </a>
+    </div>
+
+</body>
+</html>
